@@ -1,22 +1,21 @@
-package desynova.harsh.harshassignment.ui.component.dashboard;
+package desynova.harsh.harshassignment.ui.component.notification;
 
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import desynova.harsh.harshassignment.DesynovaApp;
 import desynova.harsh.harshassignment.R;
-import desynova.harsh.harshassignment.data.remote.dto.TabTwo;
+import desynova.harsh.harshassignment.data.remote.dto.TabThree;
 import desynova.harsh.harshassignment.ui.base.BaseFragment;
 import desynova.harsh.harshassignment.utils.SpacesItemDecorationGrid;
+import io.huannguyen.swipeablerv.view.SWRecyclerView;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.view.View.GONE;
@@ -26,28 +25,29 @@ import static android.view.View.VISIBLE;
  * Created by harshmittal on 23/11/17.
  */
 
-public class DashBoardFragment extends BaseFragment implements DashContract.View {
+public class NotificationFragment extends BaseFragment implements NotificationContract.View {
     @Inject
-    DashPresenter presenter;
+    NotificationPresenter presenter;
     @BindView(R.id.recyclerView1)
-    RecyclerView recyclerView1;
-    @BindView(R.id.bgImage)
-    AppCompatImageView imageView;
+    SWRecyclerView recyclerView1;
     @BindView(R.id.pb_loading)
     ProgressBar pbLoading;
     @BindView(R.id.tv_no_data)
     TextView tvNoData;
+    @BindView(R.id.rl_list)
+    RelativeLayout rlList;
+
 
     @Override
     public void showMessage(String msg) {
-        Snackbar.make(imageView, msg, LENGTH_SHORT).show();
+        Snackbar.make(rlList, msg, LENGTH_SHORT).show();
 
     }
 
     @Override
     protected void initializeDagger() {
         DesynovaApp desynovaApp = (DesynovaApp) getActivity().getApplicationContext();
-        desynovaApp.getMainComponent().inject(DashBoardFragment.this);
+        desynovaApp.getMainComponent().inject(NotificationFragment.this);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DashBoardFragment extends BaseFragment implements DashContract.View
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_dashboard;
+        return R.layout.fragment_notification;
     }
 
     @Override
@@ -67,22 +67,22 @@ public class DashBoardFragment extends BaseFragment implements DashContract.View
     }
 
     @Override
-    public void initializeList(TabTwo tabTwo) {
+    public void initializeList(TabThree tabThree) {
         if (isVisible() && isAdded()) {
 
-            if (tabTwo.getData().getBgurl() != null)
-                Glide.with(imageView.getContext())
-                        .load(tabTwo.getData().getBgurl())
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .into(imageView);
-
-            DashBoardAdapter dashBoardAdapter1 = new DashBoardAdapter(getActivity(), tabTwo);
+            NotificationAdapter notificationAdapter = new NotificationAdapter(tabThree.getData());
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
+            recyclerView1.getSwipeMessageBuilder()
+                    .withSwipeDirection(SWRecyclerView.SwipeMessageBuilder.BOTH)
+                    .build();
+
             recyclerView1.setLayoutManager(layoutManager1);
             recyclerView1.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
             recyclerView1.setHasFixedSize(true);
-            recyclerView1.setAdapter(dashBoardAdapter1);
+            recyclerView1.setAdapter(notificationAdapter);
+
+            recyclerView1.setupSwipeToDismiss(notificationAdapter, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         }
 
     }
@@ -105,7 +105,7 @@ public class DashBoardFragment extends BaseFragment implements DashContract.View
     @Override
     public void setListVisibility(boolean isVisible) {
         if (isVisible() && isAdded()) {
-            imageView.setVisibility(isVisible ? VISIBLE : GONE);
+            rlList.setVisibility(isVisible ? VISIBLE : GONE);
 
         }
     }

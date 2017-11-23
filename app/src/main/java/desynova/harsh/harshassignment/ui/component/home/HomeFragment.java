@@ -77,37 +77,44 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Ima
 
     @Override
     public void initializeList1(TabOne tabOne) {
-        ImageAdapter imageVideoAdapter = new ImageAdapter(getActivity(), tabOne.getData(), this, this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView1.setLayoutManager(layoutManager);
-        recyclerView1.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
-        recyclerView1.setHasFixedSize(true);
-        recyclerView1.setAdapter(imageVideoAdapter);
+        if (isVisible() && isAdded()) {
+            ImageAdapter imageVideoAdapter = new ImageAdapter(getActivity(), tabOne.getData(), this, this);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            recyclerView1.setLayoutManager(layoutManager);
+            recyclerView1.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
+            recyclerView1.setHasFixedSize(true);
+            recyclerView1.setAdapter(imageVideoAdapter);
+        }
     }
 
     @Override
     public void initializeList2(TabOne tabOne) {
-        ImageAdapter imageVideoAdapter = new ImageAdapter(getActivity(), tabOne.getData(), this, this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView2.setLayoutManager(layoutManager);
-        recyclerView2.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
-        recyclerView2.setHasFixedSize(true);
-        recyclerView2.setAdapter(imageVideoAdapter);
+        if (isVisible() && isAdded()) {
+            ImageAdapter imageVideoAdapter = new ImageAdapter(getActivity(), tabOne.getData(), this, this);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            recyclerView2.setLayoutManager(layoutManager);
+            recyclerView2.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
+            recyclerView2.setHasFixedSize(true);
+            recyclerView2.setAdapter(imageVideoAdapter);
+        }
     }
 
     @Override
     public void setLoaderVisibility(boolean isVisible) {
-        pbLoading.setVisibility(isVisible ? VISIBLE : GONE);
+        if (isVisible() && isAdded())
+            pbLoading.setVisibility(isVisible ? VISIBLE : GONE);
     }
 
     @Override
     public void setNoDataVisibility(boolean isVisible) {
-        tvNoData.setVisibility(isVisible ? VISIBLE : GONE);
+        if (isVisible() && isAdded())
+            tvNoData.setVisibility(isVisible ? VISIBLE : GONE);
     }
 
     @Override
     public void setListVisibility(boolean isVisible) {
-        rlList.setVisibility(isVisible ? VISIBLE : GONE);
+        if (isVisible && isAdded())
+            rlList.setVisibility(isVisible ? VISIBLE : GONE);
     }
 
     @Override
@@ -117,8 +124,10 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Ima
 
     @Override
     public void setEmptyList(boolean visibility) {
-        textEmptyList.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        recyclerView2.setVisibility(visibility ? View.GONE : View.VISIBLE);
+        if (isVisible() && isAdded()) {
+            textEmptyList.setVisibility(visibility ? View.VISIBLE : View.GONE);
+            recyclerView2.setVisibility(visibility ? View.GONE : View.VISIBLE);
+        }
     }
 
     @Override

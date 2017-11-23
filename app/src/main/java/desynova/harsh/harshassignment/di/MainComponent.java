@@ -6,6 +6,7 @@ import dagger.Component;
 import desynova.harsh.harshassignment.ui.component.dashboard.DashBoardFragment;
 import desynova.harsh.harshassignment.ui.component.home.HomeFragment;
 import desynova.harsh.harshassignment.ui.component.main.MainActivity;
+import desynova.harsh.harshassignment.ui.component.notification.NotificationFragment;
 import desynova.harsh.harshassignment.ui.component.splash.SplashActivity;
 
 @Singleton
@@ -18,5 +19,7 @@ public interface MainComponent {
     void inject(HomeFragment fragment);
 
     void inject(DashBoardFragment fragment);
+
+    void inject(NotificationFragment fragment);
 
 }

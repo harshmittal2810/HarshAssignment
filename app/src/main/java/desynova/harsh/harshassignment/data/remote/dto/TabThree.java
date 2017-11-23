@@ -14,10 +14,10 @@ import java.util.List;
 public class TabThree {
     @SerializedName("error_code")
     @Expose
-    private Object errorCode;
+    private String errorCode;
     @SerializedName("error_message")
     @Expose
-    private Object errorMessage;
+    private String errorMessage;
     @SerializedName("success")
     @Expose
     private Boolean success;
@@ -25,19 +25,19 @@ public class TabThree {
     @Expose
     private List<Datum> data = null;
 
-    public Object getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(Object errorCode) {
+    public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 
-    public Object getErrorMessage() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(Object errorMessage) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 

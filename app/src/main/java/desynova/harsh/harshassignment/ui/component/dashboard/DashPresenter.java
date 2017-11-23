@@ -19,25 +19,29 @@ public class DashPresenter extends Presenter<DashContract.View> {
         @Override
         public <T> void onSuccess(T type) {
             TabTwo tabTwo = (TabTwo) type;
-            DashPresenter.this.tabTwo = tabTwo;
-            if (!isNull(tabTwo)) {
-                if (tabTwo.getSuccess()) {
-                    showList(true);
-                    getView().initializeList(tabTwo);
+            if (getView() != null) {
+                DashPresenter.this.tabTwo = tabTwo;
+                if (!isNull(tabTwo)) {
+                    if (tabTwo.getSuccess()) {
+                        showList(true);
+                        getView().initializeList(tabTwo);
+                    } else {
+                        showList(false);
+                        getView().showMessage(tabTwo.getErrorMessage());
+                    }
                 } else {
                     showList(false);
-                    getView().showMessage(tabTwo.getErrorMessage());
                 }
-            } else {
-                showList(false);
+                getView().setLoaderVisibility(false);
             }
-            getView().setLoaderVisibility(false);
         }
 
         @Override
         public void onFail() {
-            showList(false);
-            getView().setLoaderVisibility(false);
+            if (getView() != null) {
+                showList(false);
+                getView().setLoaderVisibility(false);
+            }
         }
     };
 
@@ -54,15 +58,19 @@ public class DashPresenter extends Presenter<DashContract.View> {
     }
 
     private void getDataForTabTwo() {
-        getView().setLoaderVisibility(true);
-        getView().setNoDataVisibility(false);
-        getView().setListVisibility(false);
-        appUseCase.getDataTabTwo(callback);
+        if (getView() != null) {
+            getView().setLoaderVisibility(true);
+            getView().setNoDataVisibility(false);
+            getView().setListVisibility(false);
+            appUseCase.getDataTabTwo(callback);
+        }
     }
 
     private void showList(boolean isVisible) {
-        getView().setNoDataVisibility(!isVisible);
-        getView().setListVisibility(isVisible);
+        if (getView() != null) {
+            getView().setNoDataVisibility(!isVisible);
+            getView().setListVisibility(isVisible);
+        }
     }
 
 }

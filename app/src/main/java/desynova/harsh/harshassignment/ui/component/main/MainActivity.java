@@ -16,6 +16,7 @@ import desynova.harsh.harshassignment.R;
 import desynova.harsh.harshassignment.ui.base.BaseActivity;
 import desynova.harsh.harshassignment.ui.component.dashboard.DashBoardFragment;
 import desynova.harsh.harshassignment.ui.component.home.HomeFragment;
+import desynova.harsh.harshassignment.ui.component.notification.NotificationFragment;
 
 public class MainActivity extends BaseActivity
         implements MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +87,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.tab3:
                 setToolBarTitle(getString(R.string.title_notifications));
-                fragmentClass = HomeFragment.class;
+                fragmentClass = NotificationFragment.class;
                 break;
 
         }

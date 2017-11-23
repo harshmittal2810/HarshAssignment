@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import desynova.harsh.harshassignment.R;
 import desynova.harsh.harshassignment.data.remote.dto.TabOne;
 
-public class ImageViewHolder extends RecyclerView.ViewHolder {
+public class DashBoardViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.iv_item_image)
     AppCompatImageView itemImage;
@@ -23,21 +23,10 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     CardView cardView;
 
 
-    public ImageViewHolder(View itemView) {
+    public DashBoardViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
-
-
-    public void bind(int position, TabOne.Datum datum) {
-        //need to move to mapper
-
-        Glide.with(itemImage.getContext())
-                .load(datum.getUrl())
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .into(itemImage);
-    }
-
+    
 }
 

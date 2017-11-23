@@ -19,25 +19,31 @@ public class HomePresenter extends Presenter<HomeContract.View> {
         @Override
         public <T> void onSuccess(T type) {
             TabOne tabOne = (TabOne) type;
-            HomePresenter.this.tabOneDataOne = tabOne;
-            if (!isNull(tabOne)) {
-                if (tabOne.getSuccess()) {
-                    showList1(true);
-                    getView().initializeList1(tabOne);
+            if (getView() != null) {
+
+                HomePresenter.this.tabOneDataOne = tabOne;
+                if (!isNull(tabOne)) {
+                    if (tabOne.getSuccess()) {
+                        showList1(true);
+                        getView().initializeList1(tabOne);
+                    } else {
+                        showList1(false);
+                        getView().showMessage(tabOne.getErrorMessage());
+                    }
                 } else {
                     showList1(false);
-                    getView().showMessage(tabOne.getErrorMessage());
                 }
-            } else {
-                showList1(false);
+                getView().setLoaderVisibility(false);
             }
-            getView().setLoaderVisibility(false);
         }
 
         @Override
         public void onFail() {
-            showList1(false);
-            getView().setLoaderVisibility(false);
+            if (getView() != null) {
+                showList1(false);
+                getView().setLoaderVisibility(false);
+
+            }
         }
     };
     private TabOne tabOneDataTwo;
@@ -45,25 +51,30 @@ public class HomePresenter extends Presenter<HomeContract.View> {
         @Override
         public <T> void onSuccess(T type) {
             TabOne tabOne = (TabOne) type;
-            HomePresenter.this.tabOneDataTwo = tabOne;
-            if (!isNull(tabOne)) {
-                if (tabOne.getSuccess()) {
-                    showList2(true);
-                    getView().initializeList2(tabOne);
+            if (getView() != null) {
+
+                HomePresenter.this.tabOneDataTwo = tabOne;
+                if (!isNull(tabOne)) {
+                    if (tabOne.getSuccess()) {
+                        showList2(true);
+                        getView().initializeList2(tabOne);
+                    } else {
+                        showList2(false);
+                        getView().showMessage(tabOne.getErrorMessage());
+                    }
                 } else {
-                    showList2(false);
-                    getView().showMessage(tabOne.getErrorMessage());
+                    showList1(false);
                 }
-            } else {
-                showList1(false);
+                getView().setLoaderVisibility(false);
             }
-            getView().setLoaderVisibility(false);
         }
 
         @Override
         public void onFail() {
-            showList2(false);
-            getView().setLoaderVisibility(false);
+            if (getView() != null) {
+                showList2(false);
+                getView().setLoaderVisibility(false);
+            }
         }
     };
 
@@ -81,28 +92,35 @@ public class HomePresenter extends Presenter<HomeContract.View> {
     }
 
     private void getDataFotTabOne() {
-        getView().setLoaderVisibility(true);
-        getView().setNoDataVisibility(false);
-        getView().setListVisibility(false);
-        appUseCase.getDataTabDataOne(callback1);
+        if (getView() != null) {
+            getView().setLoaderVisibility(true);
+            getView().setNoDataVisibility(false);
+            getView().setListVisibility(false);
+            appUseCase.getDataTabDataOne(callback1);
+        }
     }
 
     private void getDataFotTabTwo() {
-        getView().setLoaderVisibility(true);
-        getView().setNoDataVisibility(false);
-        getView().setListVisibility(false);
-        appUseCase.getDataTabDataTwo(callback2);
+        if (getView() != null) {
+            getView().setLoaderVisibility(true);
+            getView().setNoDataVisibility(false);
+            getView().setListVisibility(false);
+            appUseCase.getDataTabDataTwo(callback2);
+        }
     }
 
     private void showList1(boolean isVisible) {
-        getView().setNoDataVisibility(!isVisible);
-        getView().setListVisibility(isVisible);
+        if (getView() != null) {
+            getView().setNoDataVisibility(!isVisible);
+            getView().setListVisibility(isVisible);
+        }
     }
 
     private void showList2(boolean isVisible) {
-        getView().setNoDataVisibility(!isVisible);
-        getView().setListVisibility(isVisible);
+        if (getView() != null) {
+            getView().setNoDataVisibility(!isVisible);
+            getView().setListVisibility(isVisible);
+        }
     }
-
 
 }
