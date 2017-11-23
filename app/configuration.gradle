@@ -1,0 +1,19 @@
+ext {
+    //App name
+    versionCode = 1
+    versionName = "1"
+
+    //Compilation
+    minSdkVersion = 16
+    compileSdkVersion = 26
+    targetSdkVersion = 26
+
+    //Libraries
+    buildToolsVersion = '27.0.1'
+    supportLibraryVersion = '27.0.1'
+    daggerVersion = '2.0.2'
+    retrofitVersion = '2.2.0'
+    okhttpVersion = '3.3.0'
+    butterKnifeVersion = '8.5.1'
+    firebaseVersion = '10.0.1'
+}
