@@ -5,7 +5,6 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import desynova.harsh.harshassignment.data.remote.dto.TabThree;
-import desynova.harsh.harshassignment.data.remote.dto.TabTwo;
 import desynova.harsh.harshassignment.ui.base.Presenter;
 import desynova.harsh.harshassignment.ui.base.listeners.BaseCallback;
 import desynova.harsh.harshassignment.usecase.AppUseCase;
@@ -20,25 +19,29 @@ public class NotificationPresenter extends Presenter<NotificationContract.View> 
         @Override
         public <T> void onSuccess(T type) {
             TabThree tabThree = (TabThree) type;
-            NotificationPresenter.this.tabThree = tabThree;
-            if (!isNull(tabThree)) {
-                if (tabThree.getSuccess()) {
-                    showList(true);
-                    getView().initializeList(tabThree);
+            if (getView() != null) {
+                NotificationPresenter.this.tabThree = tabThree;
+                if (!isNull(tabThree)) {
+                    if (tabThree.getSuccess()) {
+                        showList(true);
+                        getView().initializeList(tabThree);
+                    } else {
+                        showList(false);
+                        getView().showMessage(tabThree.getErrorMessage());
+                    }
                 } else {
                     showList(false);
-                    getView().showMessage(tabThree.getErrorMessage());
                 }
-            } else {
-                showList(false);
+                getView().setLoaderVisibility(false);
             }
-            getView().setLoaderVisibility(false);
         }
 
         @Override
         public void onFail() {
-            showList(false);
-            getView().setLoaderVisibility(false);
+            if (getView() != null) {
+                showList(false);
+                getView().setLoaderVisibility(false);
+            }
         }
     };
 
@@ -55,10 +58,12 @@ public class NotificationPresenter extends Presenter<NotificationContract.View> 
     }
 
     private void getDataForTabThree() {
-        getView().setLoaderVisibility(true);
-        getView().setNoDataVisibility(false);
-        getView().setListVisibility(false);
-        appUseCase.getDataTabThree(callback);
+        if (getView() != null) {
+            getView().setLoaderVisibility(true);
+            getView().setNoDataVisibility(false);
+            getView().setListVisibility(false);
+            appUseCase.getDataTabThree(callback);
+        }
     }
 
     private void showList(boolean isVisible) {

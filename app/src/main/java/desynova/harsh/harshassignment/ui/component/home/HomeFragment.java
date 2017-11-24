@@ -84,6 +84,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Ima
             recyclerView1.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
             recyclerView1.setHasFixedSize(true);
             recyclerView1.setAdapter(imageVideoAdapter);
+            onItemSelected(0, tabOne.getData().get(0).getUrl());
+
         }
     }
 
@@ -96,25 +98,34 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Ima
             recyclerView2.addItemDecoration(new SpacesItemDecorationGrid(getActivity(), 5, 2));
             recyclerView2.setHasFixedSize(true);
             recyclerView2.setAdapter(imageVideoAdapter);
+
         }
     }
 
     @Override
     public void setLoaderVisibility(boolean isVisible) {
-        if (isVisible() && isAdded())
+        if (isVisible() && isAdded()) {
             pbLoading.setVisibility(isVisible ? VISIBLE : GONE);
+            imageView.setVisibility(isVisible ? GONE : VISIBLE);
+        }
     }
 
     @Override
     public void setNoDataVisibility(boolean isVisible) {
-        if (isVisible() && isAdded())
+        if (isVisible() && isAdded()) {
             tvNoData.setVisibility(isVisible ? VISIBLE : GONE);
+            imageView.setVisibility(isVisible ? GONE : VISIBLE);
+        }
     }
 
     @Override
     public void setListVisibility(boolean isVisible) {
-        if (isVisible && isAdded())
+        if (isVisible() && isAdded()) {
             rlList.setVisibility(isVisible ? VISIBLE : GONE);
+            imageView.setVisibility(isVisible ? VISIBLE : GONE);
+        }
+
+
     }
 
     @Override

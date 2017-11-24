@@ -1,11 +1,18 @@
 package desynova.harsh.harshassignment.ui.component.notification;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,6 +21,9 @@ import desynova.harsh.harshassignment.DesynovaApp;
 import desynova.harsh.harshassignment.R;
 import desynova.harsh.harshassignment.data.remote.dto.TabThree;
 import desynova.harsh.harshassignment.ui.base.BaseFragment;
+import desynova.harsh.harshassignment.ui.base.listeners.RecyclerItemListener;
+import desynova.harsh.harshassignment.ui.component.details.DetailsActivity;
+import desynova.harsh.harshassignment.utils.Constants;
 import desynova.harsh.harshassignment.utils.SpacesItemDecorationGrid;
 import io.huannguyen.swipeablerv.view.SWRecyclerView;
 
@@ -25,7 +35,7 @@ import static android.view.View.VISIBLE;
  * Created by harshmittal on 23/11/17.
  */
 
-public class NotificationFragment extends BaseFragment implements NotificationContract.View {
+public class NotificationFragment extends BaseFragment implements NotificationContract.View, RecyclerItemListener {
     @Inject
     NotificationPresenter presenter;
     @BindView(R.id.recyclerView1)
@@ -36,7 +46,8 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
     TextView tvNoData;
     @BindView(R.id.rl_list)
     RelativeLayout rlList;
-
+    Activity activity;
+    List<TabThree.Datum> datum;
 
     @Override
     public void showMessage(String msg) {
@@ -70,7 +81,8 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
     public void initializeList(TabThree tabThree) {
         if (isVisible() && isAdded()) {
 
-            NotificationAdapter notificationAdapter = new NotificationAdapter(tabThree.getData());
+            datum = tabThree.getData();
+            NotificationAdapter notificationAdapter = new NotificationAdapter(tabThree.getData(), this);
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
             recyclerView1.getSwipeMessageBuilder()
@@ -87,7 +99,6 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
 
     }
 
-
     @Override
     public void setLoaderVisibility(boolean isVisible) {
         if (isVisible() && isAdded()) {
@@ -99,6 +110,14 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
     public void setNoDataVisibility(boolean isVisible) {
         if (isVisible() && isAdded()) {
             tvNoData.setVisibility(isVisible ? VISIBLE : GONE);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            this.activity = (Activity) context;
         }
     }
 
@@ -115,4 +134,20 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
         super.onDestroyView();
     }
 
+    @Override
+    public void onItemSelected(int position, String url) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(activity, recyclerView1, "transition");
+        int revealX = (int) (recyclerView1.getX() + recyclerView1.getWidth() / 2);
+        int revealY = (int) (recyclerView1.getY() + recyclerView1.getHeight() / 2);
+
+        Intent intent = new Intent(getContext(), DetailsActivity.class);
+        intent.putExtra(Constants.TYPE, Constants.DETAILS);
+        intent.putExtra(Constants.Url, datum.get(position).getUrl());
+        intent.putExtra(Constants.Title, datum.get(position).getTitle());
+        intent.putExtra(Constants.Text, datum.get(position).getText());
+        intent.putExtra(DetailsActivity.EXTRA_CIRCULAR_REVEAL_X, revealX);
+        intent.putExtra(DetailsActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
 }

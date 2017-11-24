@@ -11,12 +11,12 @@ import desynova.harsh.harshassignment.R;
  * Created by harshmittal on 23/11/17.
  */
 
-class ViewHolderRecylerView extends RecyclerView.ViewHolder {
+class ViewHolderRecyclerView extends RecyclerView.ViewHolder {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    public ViewHolderRecylerView(View itemView) {
+    public ViewHolderRecyclerView(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
